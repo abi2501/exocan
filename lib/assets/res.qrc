@@ -1,0 +1,19 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>images/prime_sort-up-fill (3).png</file>
+    <file>images/backward.png</file>
+    <file>images/data_icon.png</file>
+    <file>images/Disenable.png</file>
+    <file>images/forward.png</file>
+    <file>images/func_icon.png</file>
+    <file>images/hand.png</file>
+    <file>images/icon-park-solid_treadmill.png</file>
+    <file>images/play.png</file>
+    <file>images/speed.png</file>
+    <file>images/sys_icon.png</file>
+    <file>images/icon-park-solid_treadmill.png</file>
+    <file>images/data_icon.png</file>
+    <file>images/func_icon.png</file>
+    <file>images/sys_icon.png</file>
+  </qresource>
+</RCC>
