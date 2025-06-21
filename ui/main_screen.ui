@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,15,10">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,20,15">
     <item>
      <widget class="QWidget" name="top_nav_wid" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -216,7 +216,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QFrame" name="frame">
+        <widget class="QFrame" name="graph_wid">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -229,7 +229,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="bottom_wid" native="true"/>
+     <widget class="QWidget" name="ctrl_wid" native="true"/>
     </item>
    </layout>
   </widget>

@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>images/carbon_add-filled.png</file>
+    <file>images/lsicon_minus-filled.png</file>
+    <file>images/icon-park-solid_muscle.png</file>
     <file>images/prime_sort-up-fill (3).png</file>
     <file>images/backward.png</file>
     <file>images/data_icon.png</file>

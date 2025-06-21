@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
         self.container_layout = QHBoxLayout()
         self.reziable_layout = QVBoxLayout()
 
-        # self.set_main_control_layout()
+        self.set_main_control_layout()
         self.init_settings()
         self.set_slots()
 
@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
 
     def set_main_control_layout(self):
 
-        self.ui.frame.setLayout(self.container_layout)
+        self.ui.ctrl_wid.setLayout(self.container_layout)
         self.container_layout.addWidget(self.treadmill_ctl_wid)
         self.container_layout.addWidget(self.exo_muscle_ctl_wid)
 
