@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout
 from lib.controller.util.helper import resource_path
 from lib.controller.views.main_screen import Ui_MainWindow
 from lib.controller.widgets.features.exomusle_control_wid import ExoMuscleControlUI
+from lib.controller.widgets.features.mvlogger_wid import MvLoggerUI
 from lib.controller.widgets.features.treadmill_control_wid import TreadmillControlUI
 # from resizer import ResizableFrame
 
@@ -21,6 +22,7 @@ class MainWindow(QMainWindow):
         """ Instantiate Component Widgets """
         self.treadmill_ctl_wid = TreadmillControlUI()
         self.exo_muscle_ctl_wid = ExoMuscleControlUI()
+        self.mv_logger_wid = MvLoggerUI()
 
         self.container_layout = QHBoxLayout()
         self.reziable_layout = QVBoxLayout()
@@ -44,22 +46,15 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(style)
 
     def set_main_control_layout(self):
+        self.ui.ctrl_wid.layout().addWidget(self.treadmill_ctl_wid)
+        self.ui.ctrl_wid.layout().addWidget(self.exo_muscle_ctl_wid)
+        self.ui.ctrl_wid.layout().addWidget(self.mv_logger_wid)
 
-        self.ui.ctrl_wid.setLayout(self.container_layout)
-        self.container_layout.addWidget(self.treadmill_ctl_wid)
-        self.container_layout.addWidget(self.exo_muscle_ctl_wid)
-
-        # # self.ui.main_wid
-        # self.container_layout.addWidget(self.treadmill_ctl_wid)
-        # self.container_layout.addWidget(self.exo_muscle_ctl_wid)
-        # self.ui.main_wid.setLayout(self.container_layout)
-
-        # self.ui.bottom_wid.setLayout(self.reziable_layout)
-
-        # self.reziable_layout.addWidget(ResizableFrame())
+        self.ui.ctrl_layout.setStretch(0,4)
+        self.ui.ctrl_layout.setStretch(1,4)
+        self.ui.ctrl_layout.setStretch(2,2)
 
     def set_slots(self):
-
         # Set Shortcut for close window on ctrl + c
         self.short_cut = QShortcut(QKeySequence("Ctrl+C"), self)
         self.short_cut.activated.connect(self.close)

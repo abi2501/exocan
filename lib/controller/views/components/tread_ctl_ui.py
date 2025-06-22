@@ -14,6 +14,7 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.resize(574, 363)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Form)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.treadmill_ctl_wid = QtWidgets.QWidget(parent=Form)
         self.treadmill_ctl_wid.setObjectName("treadmill_ctl_wid")
