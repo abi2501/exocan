@@ -1,0 +1,452 @@
+# MM Treadmill System - Developer Documentation
+
+## Table of Contents
+1. [Overview](#overview)
+2. [Architecture](#architecture)
+3. [Project Structure](#project-structure)
+4. [Setup and Installation](#setup-and-installation)
+5. [Core Components](#core-components)
+6. [UI Components](#ui-components)
+7. [Development Guidelines](#development-guidelines)
+8. [API Reference](#api-reference)
+9. [Troubleshooting](#troubleshooting)
+10. [Contributing](#contributing)
+
+## Overview
+
+The MM Treadmill System is a PyQt6-based desktop application designed for controlling and monitoring treadmill operations 
+  with integrated exo-muscle assistance and gait prediction capabilities. The application provides a comprehensive interface for:
+
+- **Treadmill Control**: Speed management, play/pause functionality, emergency stop
+- **Exo-Muscle Control**: Pressure, active phase, duration control for left/right exo-muscles
+- **Gait Prediction**: Real-time gait analysis and prediction visualization
+- **GRF (Ground Reaction Force) Monitoring**: Force measurement and graphing
+- **Training Interface**: Dedicated training screen with camera integration
+- **Data Logging**: Comprehensive logging and data recording capabilities
+
+### Key Features
+- Dark theme UI with modern styling
+- Modular widget-based architecture
+- Real-time data visualization
+- Serial communication support
+- Responsive design with animations
+
+## Architecture
+
+### Design Patterns
+- **MVC Pattern**: Separation of UI views, controller logic, and data models
+- **Widget Composition**: Modular UI components that can be reused and combined
+- **Singleton Pattern**: AppManager for global application state
+- **Signal-Slot Pattern**: Qt's event-driven communication between components
+
+### Technology Stack
+- **GUI Framework**: PyQt6
+- **Theme Engine**: PyQtDarkTheme
+- **Data Visualization**: Matplotlib
+- **Data Processing**: NumPy
+- **Font**: Poppins (custom font integration)
+
+## Project Structure
+
+```
+exodemo-master/
+├── app.py                          # Main application entry point
+├── requirements.txt                # Python dependencies
+├── lib/                           # Core application library
+│   ├── controller/                # Main application logic
+│   │   ├── exo_screen.py         # Main window controller
+│   │   ├── features/             # Feature-specific widgets
+│   │   │   └── widgets/          # UI widget components
+│   │   ├── views/                # UI view definitions
+│   │   │   └── ui/              # Generated UI files
+│   │   ├── components/           # Reusable UI components
+│   │   ├── training/             # Training screen logic
+│   │   └── util/                 # Utility functions
+│   └── assets/                   # Static resources
+│       ├── fonts/               # Custom fonts
+│       └── styles/              # QSS stylesheets
+├── ui/                           # UI-related files
+├── output/                       # Application output
+└── env/                         # Virtual environment
+```
+
+## Setup and Installation
+
+### Prerequisites
+- Python 3.8 or higher
+- pip package manager
+- Git (for version control)
+
+### Installation Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd exodemo-master
+   ```
+
+2. **Create virtual environment**
+   ```bash
+   python -m venv env
+   ```
+
+3. **Activate virtual environment**
+   ```bash
+   # Windows
+   env\Scripts\activate
+   
+   # Linux/Mac
+   source env/bin/activate
+   ```
+
+4. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. **Run the application**
+   ```bash
+   python app.py
+   ```
+
+### Dependencies
+
+Key dependencies from `requirements.txt`:
+- `PyQt6==6.9.1`: Main GUI framework
+- `pyqtdarktheme==2.1.0`: Dark theme support
+- `matplotlib==3.10.3`: Data visualization
+- `numpy==2.3.1`: Numerical computing
+- `pillow==11.3.0`: Image processing
+
+## Core Components
+
+### MainWindow (`lib/controller/exo_screen.py`)
+
+The main application window that orchestrates all UI components.
+
+**Key Responsibilities:**
+- Application initialization and setup
+- Theme management
+- Widget integration
+- Signal-slot connections
+- Serial communication management
+
+**Key Methods:**
+- `__init__()`: Initialize main window and all widgets
+- `init_app_settings()`: Apply theme and styles
+- `set_slots()`: Connect UI signals to handlers
+- `connect_port()`: Handle serial port connections
+- `set_app_mode()`: Switch between application modes
+
+### AppManager (`lib/controller/util/app_manager.py`)
+
+Singleton class for global application state management.
+
+**Features:**
+- Theme management (dark/light)
+- Global application settings
+- Singleton pattern implementation
+
+**Methods:**
+- `apply_theme()`: Apply current theme
+- `toggle_theme()`: Switch between themes
+
+## UI Components
+
+### Treadmill Control Widget (`lib/controller/features/widgets/treadmill_ctl_widget.py`)
+
+Controls treadmill speed and operation.
+
+**Features:**
+- Speed control (left/right independently)
+- Play/pause functionality
+- Emergency stop
+- Button animations
+- Visual feedback
+
+**Key Methods:**
+- `set_tread_ctl_enabled(state)`: Enable/disable controls
+- `play_btn_pressed()`: Handle play/pause toggle
+- `set_speed(btn, spd_wid, op)`: Adjust speed values
+- `animate_click(wid)`: Button click animation
+
+### Exo-Muscle Control Widget (`lib/controller/features/widgets/exomuscle_ctl_widget.py`)
+
+Manages exo-muscle assistance parameters.
+
+**Features:**
+- Left/right exo-muscle control
+- Pressure adjustment
+- Active phase configuration
+- Duration settings
+- Stacked widget interface
+
+**Parameters:**
+- Pressure: Control assistance force
+- Active Phase: Timing of assistance
+- Active Duration: Duration of assistance
+- Max Duration: Maximum assistance time
+
+### GRF Graph Widget (`lib/controller/features/widgets/grf_ctl_widget.py`)
+
+Displays Ground Reaction Force data visualization.
+
+**Features:**
+- Matplotlib integration
+- Real-time data plotting
+- Custom styling
+- Grid and axis configuration
+- Demo data support
+
+**Key Methods:**
+- `set_grf_enabled(state)`: Enable/disable graph
+- `plot_graph(state)`: Update graph display
+- `set_grf_graph_settings()`: Configure visual appearance
+
+### Predict Gait Widget (`lib/controller/features/widgets/predict_gait_widget.py`)
+
+Gait prediction and analysis interface.
+
+**Features:**
+- Gait simulation display
+- Progress bar visualization
+- Multiple graph views
+- Stack-based navigation
+
+**Components:**
+- `PredictGaitStackPageOne`: First page with controls
+- `PredictGaitGraph2Widget`: Graph visualization
+
+### Logger Widget (`lib/controller/features/widgets/logger_widget.py`)
+
+Data logging and recording interface.
+
+**Features:**
+- Data recording controls
+- Log file management
+- Recording status display
+
+### Settings Dialog (`lib/controller/features/widgets/settings_dialog_widget.py`)
+
+Application settings and configuration.
+
+**Features:**
+- Serial port configuration
+- Application preferences
+- Theme settings
+
+## Development Guidelines
+
+### Code Style
+
+1. **Python Conventions**
+   - Follow PEP 8 style guidelines
+   - Use descriptive variable and function names
+   - Add type hints where appropriate
+   - Include docstrings for all public methods
+
+2. **PyQt Best Practices**
+   - Use signal-slot connections for event handling
+   - Implement proper widget hierarchy
+   - Handle resource cleanup in closeEvent
+   - Use QThread for long-running operations
+
+3. **File Organization**
+   - Keep UI files in `views/ui/` directory
+   - Place reusable components in `components/`
+   - Store feature-specific widgets in `features/widgets/`
+   - Maintain utility functions in `util/`
+
+### Adding New Features
+
+1. **Create Widget Component**
+   ```python
+   class NewFeatureWidget(QWidget):
+       def __init__(self):
+           super().__init__()
+           self.ui = Ui_NewFeature()
+           self.ui.setupUi(self)
+           self.init_settings()
+           self.set_actions()
+   ```
+
+2. **Add to Main Window**
+   ```python
+   # In MainWindow.__init__()
+   self.new_feature_widget = NewFeatureWidget()
+   self.ui.container.layout().addWidget(self.new_feature_widget)
+   ```
+
+3. **Connect Signals**
+   ```python
+   # In MainWindow.set_slots()
+   self.new_feature_widget.signal_name.connect(self.handler_method)
+   ```
+
+### Styling Guidelines
+
+1. **QSS Files**
+   - Store stylesheets in `lib/assets/styles/`
+   - Use consistent naming conventions
+   - Organize styles by component
+
+2. **Theme Integration**
+   - Support both dark and light themes
+   - Use CSS variables for colors
+   - Maintain consistent spacing and typography
+
+### Error Handling
+
+1. **Exception Handling**
+   ```python
+   try:
+       # Risky operation
+       result = perform_operation()
+   except SpecificException as e:
+       self.showDialog("Error", str(e))
+   ```
+
+2. **User Feedback**
+   - Use QMessageBox for critical errors
+   - Provide clear error messages
+   - Log errors for debugging
+
+## API Reference
+
+### MainWindow Class
+
+```python
+class MainWindow(QMainWindow):
+    def __init__(self):
+        """Initialize main application window"""
+        
+    def init_app_settings(self):
+        """Apply theme and initial settings"""
+        
+    def set_slots(self):
+        """Connect UI signals to handlers"""
+        
+    def connect_port(self, state):
+        """Handle serial port connection"""
+        
+    def set_app_mode(self, state):
+        """Switch application modes"""
+```
+
+### Widget Base Classes
+
+All custom widgets inherit from `QWidget` and follow this pattern:
+
+```python
+class CustomWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_CustomWidget()
+        self.ui.setupUi(self)
+        self.init_settings()
+        self.set_actions()
+        
+    def init_settings(self):
+        """Initialize widget settings and styling"""
+        
+    def set_actions(self):
+        """Connect button signals to handlers"""
+```
+
+### Utility Functions
+
+```python
+def resource_path(relative_path):
+    """Get absolute path to resource, works for dev and PyInstaller"""
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Font Loading Errors**
+   - Ensure Poppins font files are in `lib/assets/fonts/Poppins/`
+   - Check file permissions
+
+2. **Style Loading Issues**
+   - Verify QSS files exist in `lib/assets/styles/`
+   - Check for syntax errors in stylesheets
+
+3. **Serial Communication**
+   - Verify port availability
+   - Check device drivers
+   - Ensure proper permissions
+
+4. **Matplotlib Display Issues**
+   - Update matplotlib version
+   - Check backend compatibility
+   - Verify figure canvas integration
+
+### Debug Mode
+
+Enable debug logging by setting environment variable:
+```bash
+export PYTHONPATH=.
+python -u app.py
+```
+
+### Performance Optimization
+
+1. **Widget Loading**
+   - Lazy load heavy components
+   - Use QThread for data processing
+   - Implement proper cleanup
+
+2. **Memory Management**
+   - Dispose of matplotlib figures properly
+   - Close serial connections
+   - Clear data structures
+
+## Contributing
+
+### Development Workflow
+
+1. **Create Feature Branch**
+   ```bash
+   git checkout -b feature/new-feature
+   ```
+
+2. **Make Changes**
+   - Follow coding guidelines
+   - Add appropriate tests
+   - Update documentation
+
+3. **Submit Pull Request**
+   - Include description of changes
+   - Reference related issues
+   - Ensure all tests pass
+
+### Testing
+
+1. **Unit Tests**
+   - Test individual components
+   - Mock external dependencies
+   - Verify signal-slot connections
+
+2. **Integration Tests**
+   - Test widget interactions
+   - Verify data flow
+   - Check UI responsiveness
+
+3. **Manual Testing**
+   - Test on different screen sizes
+   - Verify theme switching
+   - Check accessibility features
+
+### Documentation Updates
+
+- Update this documentation for new features
+- Include code examples
+- Maintain API reference
+- Add troubleshooting guides
+
+---
+
+**Last Updated**: [Current Date]
+**Version**: 1.0.0
+**Maintainer**: Development Team 
