@@ -1,0 +1,252 @@
+# Visual State Flow - MM Treadmill System
+
+## Application State Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    APPLICATION LIFECYCLE                        │
+└─────────────────────────────────────────────────────────────────┘
+
+START → INITIALIZE → CONNECTED → NORMAL_MODE → TRAINING_MODE → EXIT
+   ↓         ↓           ↓            ↓             ↓
+┌─────┐  ┌────────┐  ┌────────┐  ┌─────────┐  ┌─────────┐
+│ APP │  │  MAIN  │  │ SERIAL │  │ CONTROL │  │ TRAINING│
+│START│  │ WINDOW │  │ CONNECT│  │  MODE   │  │  MODE   │
+└─────┘  └────────┘  └────────┘  └─────────┘  └─────────┘
+```
+
+## Detailed State Flow
+
+### 1. Application Startup Flow
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Application │───▶│ Load UI     │───▶│ Dark Theme  │
+│   Start     │    │ Components  │    │ Applied     │
+└─────────────┘    └─────────────┘    └─────────────┘
+       │                   │                   │
+       ▼                   ▼                   ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Initialize  │───▶│ Widget      │───▶│ Disabled    │
+│ App Manager │    │ Setup       │    │ State       │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+### 2. Connection State Flow
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Disconnected│───▶│ Connecting  │───▶│ Connected   │
+│   State     │    │   State     │    │   State     │
+└─────────────┘    └─────────────┘    └─────────────┘
+       ▲                   │                   │
+       │                   ▼                   ▼
+       │            ┌─────────────┐    ┌─────────────┐
+       └────────────│ Connection  │    │ Enable All  │
+                    │   Failed    │    │  Controls   │
+                    └─────────────┘    └─────────────┘
+```
+
+### 3. Normal Mode State Flow
+```
+┌─────────────┐
+│ Normal Mode │
+│   State     │
+└─────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────────────────────┐
+│                    CONTROL MODULES                      │
+├─────────────┬─────────────┬─────────────┬─────────────┤
+│ Treadmill   │ Exo-Muscle  │ Gait        │ GRF         │
+│  Control    │  Control    │ Prediction  │ Monitoring  │
+└─────────────┴─────────────┴─────────────┴─────────────┘
+       │               │               │               │
+       ▼               ▼               ▼               ▼
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│ Speed       │ │ Pressure    │ │ Analysis    │ │ Real-time   │
+│ Control     │ │ Adjustment  │ │ Display     │ │ Plotting    │
+└─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
+```
+
+### 4. Training Mode State Flow
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Start       │───▶│ Training    │───▶│ Training    │
+│ Recording   │    │ Window      │    │ Interface   │
+└─────────────┘    └─────────────┘    └─────────────┘
+       │                   │                   │
+       ▼                   ▼                   ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Camera      │───▶│ COP         │───▶│ Data        │
+│ Connection  │    │ Plotting    │    │ Recording   │
+└─────────────┘    └─────────────┘    └─────────────┘
+       │                   │                   │
+       ▼                   ▼                   ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Stop        │───▶│ Hide        │───▶│ Return to   │
+│ Recording   │    │ Training    │    │ Normal Mode │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+## Component State Details
+
+### Treadmill Control States
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Disabled    │───▶│ Enabled     │───▶│ Stopped     │
+└─────────────┘    └─────────────┘    └─────────────┘
+                           │                   │
+                           ▼                   ▼
+                    ┌─────────────┐    ┌─────────────┐
+                    │ Running     │───▶│ Emergency   │
+                    │             │    │   Stop      │
+                    └─────────────┘    └─────────────┘
+                           │                   │
+                           ▼                   ▼
+                    ┌─────────────┐    ┌─────────────┐
+                    │ Speed       │    │ Reset       │
+                    │ Adjustment  │    │ Emergency   │
+                    └─────────────┘    └─────────────┘
+```
+
+### Exo-Muscle Control States
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Disabled    │───▶│ Enabled     │───▶│ Inactive    │
+└─────────────┘    └─────────────┘    └─────────────┘
+                           │                   │
+                           ▼                   ▼
+                    ┌─────────────┐    ┌─────────────┐
+                    │ Active      │───▶│ Left Side   │
+                    │             │    │ Control     │
+                    └─────────────┘    └─────────────┘
+                           │                   │
+                           ▼                   ▼
+                    ┌─────────────┐    ┌─────────────┐
+                    │ Right Side  │    │ Parameter   │
+                    │ Control     │    │ Adjustment  │
+                    └─────────────┘    └─────────────┘
+```
+
+### Gait Prediction States
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Disabled    │───▶│ Enabled     │───▶│ Inactive    │
+└─────────────┘    └─────────────┘    └─────────────┘
+                           │                   │
+                           ▼                   ▼
+                    ┌─────────────┐    ┌─────────────┐
+                    │ Active      │───▶│ Graph View  │
+                    │             │    │    1        │
+                    └─────────────┘    └─────────────┘
+                           │                   │
+                           ▼                   ▼
+                    ┌─────────────┐    ┌─────────────┐
+                    │ Graph View  │    │ Progress    │
+                    │    2        │    │ Tracking    │
+                    └─────────────┘    └─────────────┘
+```
+
+### GRF Monitoring States
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Disabled    │───▶│ Enabled     │───▶│ Inactive    │
+└─────────────┘    └─────────────┘    └─────────────┘
+                           │                   │
+                           ▼                   ▼
+                    ┌─────────────┐    ┌─────────────┐
+                    │ Active      │───▶│ Data        │
+                    │             │    │ Plotting    │
+                    └─────────────┘    └─────────────┘
+```
+
+## Error Handling Flow
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Operation   │───▶│ Success?    │───▶│ Continue    │
+│ Attempted   │    │             │    │ Normal Flow │
+└─────────────┘    └─────────────┘    └─────────────┘
+       │                   │
+       ▼                   ▼
+┌─────────────┐    ┌─────────────┐
+│ Error       │───▶│ Error Type  │
+│ Detected    │    │ Detection   │
+└─────────────┘    └─────────────┘
+       │                   │
+       ▼                   ▼
+┌─────────────────────────────────────────────────────────┐
+│                    ERROR TYPES                          │
+├─────────────┬─────────────┬─────────────┬─────────────┤
+│ Connection  │ Device      │ Data        │ System      │
+│   Error     │   Error     │   Error     │   Error     │
+└─────────────┴─────────────┴─────────────┴─────────────┘
+       │               │               │               │
+       ▼               ▼               ▼               ▼
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│ Retry       │ │ Disable     │ │ Clear Data  │ │ Restart     │
+│ Connection  │ │ Component   │ │ & Retry     │ │ Application │
+└─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
+```
+
+## Data Flow States
+
+### Serial Communication Flow
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Disconnected│───▶│ Connecting  │───▶│ Connected   │
+└─────────────┘    └─────────────┘    └─────────────┘
+       ▲                   │                   │
+       │                   ▼                   ▼
+       │            ┌─────────────┐    ┌─────────────┐
+       └────────────│ Connection  │    │ Receiving   │
+                    │   Failed    │    │   Data      │
+                    └─────────────┘    └─────────────┘
+                                               │
+                                               ▼
+                                        ┌─────────────┐
+                                        │ Processing  │
+                                        │   Data      │
+                                        └─────────────┘
+```
+
+### Data Processing Flow
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Data        │───▶│ Parsing     │───▶│ Validation  │
+│ Received    │    │   Data      │    │   Data      │
+└─────────────┘    └─────────────┘    └─────────────┘
+       │                   │                   │
+       ▼                   ▼                   ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Store       │    │ Update      │    │ Error       │
+│ Processed   │    │   UI        │    │ Handling    │
+│   Data      │    │ Display     │    │   (Skip)    │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+## State Transition Summary
+
+### Primary State Transitions
+1. **Application Start** → **Main Window** → **Disconnected State**
+2. **Disconnected State** → **Connected State** → **Normal Mode**
+3. **Normal Mode** → **Training Mode** → **Training Window**
+4. **Training Mode** → **Normal Mode** → **Application Exit**
+
+### Component State Transitions
+1. **Disabled** → **Enabled** → **Active/Inactive** → **Parameter Adjustment**
+2. **Inactive** → **Active** → **Data Processing** → **Visualization**
+3. **Active** → **Error State** → **Recovery** → **Active/Disabled**
+
+### Error Recovery Transitions
+1. **Normal Operation** → **Error Detected** → **Error Classification**
+2. **Error Classification** → **Specific Error Handling** → **Recovery Action**
+3. **Recovery Action** → **Normal Operation** (or **Application Restart**)
+
+---
+
+**Key Points:**
+- All states have clear entry and exit conditions
+- Error states have defined recovery paths
+- Component states are independent but coordinated
+- Data flow states handle real-time processing
+- Training mode is a special state that overlays normal operation 
