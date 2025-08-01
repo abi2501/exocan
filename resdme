@@ -1,0 +1,192 @@
+# MM Treadmill System
+
+A comprehensive PyQt6-based desktop application for controlling and monitoring treadmill operations with integrated exo-muscle assistance and gait prediction capabilities.
+
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd exodemo-master
+
+# Setup environment
+python -m venv env
+env\Scripts\activate  # Windows
+# source env/bin/activate  # Linux/Mac
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+python app.py
+```
+
+**For detailed setup instructions, see [Quick Start Guide](QUICK_START_GUIDE.md)**
+
+## 📋 Features
+
+### 🏃‍♂️ Treadmill Control
+- Independent left/right speed control
+- Play/pause functionality with emergency stop
+- Real-time speed monitoring
+- Smooth button animations
+
+### 💪 Exo-Muscle Assistance
+- Pressure, active phase, and duration control
+- Left/right side independent configuration
+- Real-time parameter adjustment
+- Stacked interface for easy switching
+
+### 🦶 Gait Prediction & Analysis
+- Real-time gait analysis visualization
+- Progress tracking with custom progress bars
+- Multiple graph views for comprehensive analysis
+- Predictive modeling interface
+
+### 📊 GRF (Ground Reaction Force) Monitoring
+- Real-time force measurement visualization
+- Custom matplotlib integration
+- Grid and axis configuration
+- Demo data support for testing
+
+### 🎥 Training Interface
+- Full-screen training mode
+- Camera integration support
+- COP (Center of Pressure) plotting
+- Dedicated training environment
+
+### 📝 Data Logging
+- Comprehensive data recording
+- Log file management
+- Recording status display
+- Export capabilities
+
+## 🏗️ Architecture
+
+The application follows a modular widget-based architecture with:
+
+- **MVC Pattern**: Separation of UI views, controller logic, and data models
+- **Widget Composition**: Reusable UI components
+- **Singleton Pattern**: Global application state management
+- **Signal-Slot Pattern**: Event-driven communication
+
+### Technology Stack
+- **GUI Framework**: PyQt6
+- **Theme Engine**: PyQtDarkTheme
+- **Data Visualization**: Matplotlib
+- **Data Processing**: NumPy
+- **Font**: Poppins (custom integration)
+
+## 📁 Project Structure
+
+```
+exodemo-master/
+├── app.py                          # Main application entry point
+├── requirements.txt                # Python dependencies
+├── lib/                           # Core application library
+│   ├── controller/                # Main application logic
+│   │   ├── exo_screen.py         # Main window controller
+│   │   ├── features/             # Feature-specific widgets
+│   │   │   └── widgets/          # UI widget components
+│   │   ├── views/                # UI view definitions
+│   │   ├── components/           # Reusable UI components
+│   │   ├── training/             # Training screen logic
+│   │   └── util/                 # Utility functions
+│   └── assets/                   # Static resources
+│       ├── fonts/               # Custom fonts
+│       └── styles/              # QSS stylesheets
+├── ui/                           # UI-related files
+├── output/                       # Application output
+└── env/                         # Virtual environment
+```
+
+## 📚 Documentation
+
+- **[Developer Documentation](DEVELOPER_DOCUMENTATION.md)** - Comprehensive development guide
+- **[API Reference](API_REFERENCE.md)** - Detailed API documentation
+- **[Quick Start Guide](QUICK_START_GUIDE.md)** - Get up and running in 5 minutes
+
+## 🔧 Development
+
+### Prerequisites
+- Python 3.8 or higher
+- pip package manager
+- Git for version control
+
+### Key Dependencies
+- `PyQt6==6.9.1` - Main GUI framework
+- `pyqtdarktheme==2.1.0` - Dark theme support
+- `matplotlib==3.10.3` - Data visualization
+- `numpy==2.3.1` - Numerical computing
+- `pillow==11.3.0` - Image processing
+
+### Development Workflow
+
+1. **Create Feature Branch**
+   ```bash
+   git checkout -b feature/new-feature
+   ```
+
+2. **Make Changes**
+   - Follow coding guidelines in [Developer Documentation](DEVELOPER_DOCUMENTATION.md)
+   - Add appropriate tests
+   - Update documentation
+
+3. **Submit Pull Request**
+   - Include description of changes
+   - Reference related issues
+   - Ensure all tests pass
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Font Loading Errors**
+   - Ensure Poppins font files are in `lib/assets/fonts/Poppins/`
+   - Check file permissions
+
+2. **Style Loading Issues**
+   - Verify QSS files exist in `lib/assets/styles/`
+   - Check for syntax errors in stylesheets
+
+3. **Serial Communication**
+   - Verify port availability
+   - Check device drivers
+   - Ensure proper permissions
+
+4. **Matplotlib Display Issues**
+   - Update matplotlib version
+   - Check backend compatibility
+   - Verify figure canvas integration
+
+For more detailed troubleshooting, see the [Developer Documentation](DEVELOPER_DOCUMENTATION.md#troubleshooting).
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](DEVELOPER_DOCUMENTATION.md#contributing) for details.
+
+### Development Guidelines
+- Follow PEP 8 style guidelines
+- Use signal-slot connections for event handling
+- Implement proper widget hierarchy
+- Handle resource cleanup in closeEvent
+- Use QThread for long-running operations
+
+## 📄 License
+
+[Add your license information here]
+
+## 👥 Team
+
+[Add team information here]
+
+## 📞 Support
+
+For support and questions:
+- Check the [documentation](DEVELOPER_DOCUMENTATION.md)
+- Review [troubleshooting guide](DEVELOPER_DOCUMENTATION.md#troubleshooting)
+- [Create an issue](link-to-issues)
+
+---
+
+**Ready to get started?** Check out our [Quick Start Guide](QUICK_START_GUIDE.md) to begin developing with the MM Treadmill System!
